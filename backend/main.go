@@ -28,7 +28,7 @@ func main() {
 	initRoutes(router)
 
 	// run router
-	router.Run(fmt.Sprintf("localhost:%d", portNo))
+	router.Run(fmt.Sprintf("0.0.0.0:%d", portNo))
 }
 
 func addErrorResp(c *gin.Context, code int, obj any) {
