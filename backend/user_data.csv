@@ -1,0 +1,6 @@
+Human User,Create Date,Password Chaged Date,Days since last password change,Last Access Date,Days since Last Access,MFA Enabled
+Foo Bar1,Oct 1 2020,Oct 1 2021,1325,Jan 4 2025,134,Yes
+Foo1 Bar1,Sep 20 2019,Sep 22 2019,2064,Feb 8 2025,99,No
+Foo2 Bar2,Feb 3 2022,Feb 3 2022,1200,Feb 12 2025,95,No
+Foo3 Bar3,Mar 7 2023,Mar 10 2023,801,Jan 3 2022,1232,Yes
+Foo Bar4,Apr 8 2018,Apr 12 2020,1862,Oct 4 2022,956,No
