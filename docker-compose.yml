@@ -6,3 +6,11 @@ services:
       dockerfile: Dockerfile.backend
     ports:
       - "8300:8300"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    
