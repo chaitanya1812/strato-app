@@ -177,6 +177,7 @@ const highlightInactiveUsers = () => {
         <div style={{ marginBottom: '15px' }}>
             <input
                 type="number"
+                min="0"
                 placeholder="Days since password change"
                 value={pwDays}
                 onChange={(e) => setPwDays(e.target.value)}
@@ -191,6 +192,7 @@ const highlightInactiveUsers = () => {
         <div style={{ marginBottom: '15px' }}>
             <input
                 type="number"
+                min="0"
                 placeholder="Days since last access"
                 value={accessDays}
                 onChange={(e) => setAccessDays(e.target.value)}
@@ -201,33 +203,25 @@ const highlightInactiveUsers = () => {
                 Highlight Inactive Users
             </button>
 
-            {/* <button onClick={() => setHighlightedRows(new Set())} style={{ marginRight: '20px' }}>
-                Undo
-            </button> */}
-
         </div>
 
 
-        <div>
-      {/* <h2>User Table</h2> */}
-
-
+      <div>
       <button
-        onClick={() => {setHighlightedRows(new Set())}}
+        onClick={() => {setHighlightedRows(new Set()); setPwDays(''); setAccessDays('');}}
         style={{ marginBottom: '10px', padding: '5px 10px' , marginRight: '20px', background:"#fb8a63"}}
       >
         Clear Higlight Filters
       </button>
 
       <button
-        onClick={() => {table.resetColumnFilters(); setHighlightedRows(new Set())}}
+        onClick={() => {table.resetColumnFilters(); setHighlightedRows(new Set()); setPwDays('');  setAccessDays('');}}
         style={{ marginBottom: '10px', padding: '5px 10px', background:"#ef3f27" }}
       >
         Clear All Filters
       </button>
+      </div>
 
-
-        </div>
       <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           {table.getHeaderGroups().map(headerGroup => (
