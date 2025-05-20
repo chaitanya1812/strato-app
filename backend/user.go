@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 
@@ -52,16 +51,6 @@ func readData() ([]User, error) {
 			return nil, fmt.Errorf("unable to read the file row : %s", err.Error())
 		}
 
-		// type User struct {
-		// 	HumanUser               string
-		// 	CreateDate              time.Time
-		// 	PasswordChangedDate     time.Time
-		// 	DaysSincePasswordChange int
-		// 	LastAccessDate          time.Time
-		// 	DaysSinceLastAccess     int
-		// 	MFAEnabled              bool
-		// }
-
 		createDate, err := parseDate(userRow[1])
 		if err != nil {
 			fmt.Printf("unable to parse create date : %s", err.Error())
@@ -79,19 +68,19 @@ func readData() ([]User, error) {
 			fmt.Printf("unable to parse last access date : %s", err.Error())
 			continue
 		}
+		now := time.Now()
+	
+		// daysSincePasswordChange, err := strconv.Atoi(userRow[3])
+		// if err != nil {
+		// 	fmt.Printf("unable to parse days since password change : %s", err.Error())
+		// }
+		daysSincePasswordChange := int(now.Sub(passwordChangeDate).Hours() / 24)
+		// daysSinceLastAccess, err := strconv.Atoi(userRow[5])
+		// if err != nil {
+		// 	fmt.Printf("unable to parse days since last access : %s", err.Error())
+		// }
+		daysSinceLastAccess := int(now.Sub(lastAccessDate).Hours() / 24)
 
-		daysSincePasswordChange, err := strconv.Atoi(userRow[3])
-		if err != nil {
-			fmt.Printf("unable to parse days since password change : %s", err.Error())
-			continue
-		}
-		daysSinceLastAccess, err := strconv.Atoi(userRow[5])
-		if err != nil {
-			fmt.Printf("unable to parse days since last access : %s", err.Error())
-			continue
-		}
-
-		
 		mfaEnabled := (strings.ToLower(userRow[6]) == "yes")
 
 		users = append(users, User{
