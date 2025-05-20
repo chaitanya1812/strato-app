@@ -174,30 +174,16 @@ const highlightInactiveUsers = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      {/* <h2>User Table</h2> */}
-      <button
-        onClick={() => {table.resetColumnFilters(); setHighlightedRows(new Set())}}
-        style={{ marginBottom: '10px', padding: '5px 10px' }}
-      >
-        Clear All Filters
-      </button>
-
-      <button
-        onClick={() => {setHighlightedRows(new Set())}}
-        style={{ marginBottom: '10px', padding: '5px 10px' }}
-      >
-        Clear Higlight Filters
-      </button>
-
         <div style={{ marginBottom: '15px' }}>
             <input
                 type="number"
                 placeholder="Days since password change"
                 value={pwDays}
                 onChange={(e) => setPwDays(e.target.value)}
-                style={{ marginRight: '10px' }}
+                style={{ marginRight: '10px', width:"200px"}}
+                title="Enter the number of days since last password change"
             />
-            <button onClick={() => highlightStalePasswords()} style={{ marginRight: '20px' }}>
+            <button onClick={() => highlightStalePasswords()} style={{ width:'210px'}}>
                 Highlight Password Stale Users
             </button>
 
@@ -208,9 +194,10 @@ const highlightInactiveUsers = () => {
                 placeholder="Days since last access"
                 value={accessDays}
                 onChange={(e) => setAccessDays(e.target.value)}
-                style={{ marginRight: '10px' }}
+                style={{ marginRight: '10px', width:"200px" }}
+                title="Enter the number of days since last access"
             />
-            <button onClick={() => highlightInactiveUsers()} style={{ marginRight: '20px' }}>
+            <button onClick={() => highlightInactiveUsers()} style={{ width:'210px' }}>
                 Highlight Inactive Users
             </button>
 
@@ -221,20 +208,20 @@ const highlightInactiveUsers = () => {
         </div>
 
 
-        <div style={{ padding: '20px' }}>
+        <div>
       {/* <h2>User Table</h2> */}
 
 
       <button
         onClick={() => {setHighlightedRows(new Set())}}
-        style={{ marginBottom: '10px', padding: '5px 10px' , marginRight: '20px'}}
+        style={{ marginBottom: '10px', padding: '5px 10px' , marginRight: '20px', background:"#fb8a63"}}
       >
         Clear Higlight Filters
       </button>
 
       <button
         onClick={() => {table.resetColumnFilters(); setHighlightedRows(new Set())}}
-        style={{ marginBottom: '10px', padding: '5px 10px' }}
+        style={{ marginBottom: '10px', padding: '5px 10px', background:"#ef3f27" }}
       >
         Clear All Filters
       </button>
