@@ -5,8 +5,8 @@ import UserTable from './newTable.jsx';
 function App() {
   return (
     <div className="App">
-      <img src={logo} className="App-logo" alt="logo" />
-      <h1>Strato</h1>
+      {/* <img src={logo} className="App-logo" alt="logo" />
+      <h1>Strato</h1> */}
       <UserTable/>
     </div>
   );

@@ -1,3 +1,5 @@
+import logo from './strato.svg';
+import './App.css';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   useReactTable,
@@ -14,23 +16,6 @@ function formatDate(dateStr) {
     day: 'numeric',
   });
 }
-
-// function DefaultColumnFilter({ column }) {
-//   return (
-//     <div style={{ display: 'flex', gap: '4px' }}>
-//       <input
-//         value={(column.getFilterValue() ?? '')}
-//         onChange={e => column.setFilterValue(e.target.value)}
-//         placeholder={`Filter...`}
-//         style={{ flex: 1 }}
-//       />
-//       {column.getFilterValue() && (
-//         <button onClick={() => column.setFilterValue(undefined)}>✕</button>
-//       )}
-//     </div>
-//   );
-// }
-
 
 
 function DefaultColumnFilter({ column }) {
@@ -174,105 +159,140 @@ const highlightInactiveUsers = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-        <div style={{ marginBottom: '15px' }}>
-            <input
-                type="number"
-                min="0"
-                placeholder="Days since password change"
-                value={pwDays}
-                onChange={(e) => setPwDays(e.target.value)}
-                style={{ marginRight: '10px', width:"200px"}}
-                title="Enter the number of days since last password change"
-            />
-            <button onClick={() => highlightStalePasswords()} style={{ width:'210px'}}>
-                Highlight Password Stale Users
-            </button>
 
-        </div>
-        <div style={{ marginBottom: '15px' }}>
-            <input
-                type="number"
-                min="0"
-                placeholder="Days since last access"
-                value={accessDays}
-                onChange={(e) => setAccessDays(e.target.value)}
-                style={{ marginRight: '10px', width:"200px" }}
-                title="Enter the number of days since last access"
-            />
-            <button onClick={() => highlightInactiveUsers()} style={{ width:'210px' }}>
-                Highlight Inactive Users
-            </button>
-
-        </div>
-
-
-      <div>
-      <button
-        onClick={() => {setHighlightedRows(new Set()); setPwDays(''); setAccessDays('');}}
-        style={{ marginBottom: '10px', padding: '5px 10px' , marginRight: '20px', background:"#fb8a63"}}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          width: '100%',
+          padding: '20px'
+        }}
       >
-        Clear Higlight Filters
-      </button>
+         <a href="https://www.strato-cloud.io/" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <img src={logo} className="App-logo" alt="logo" style={{ height: '100px' }} />
+            <h1 style={{ margin: 0 }}>StratoCloud</h1>
+          </div>
+        </a>
 
-      <button
-        onClick={() => {table.resetColumnFilters(); setHighlightedRows(new Set()); setPwDays('');  setAccessDays('');}}
-        style={{ marginBottom: '10px', padding: '5px 10px', background:"#ef3f27" }}
-      >
-        Clear All Filters
-      </button>
+          {/* Right: Inputs and Buttons */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end',  marginRight: '20px' }}>
+          <div style={{ marginBottom: '15px' }}>
+            <input
+              type="number"
+              min="0"
+              placeholder="Days since password change"
+              value={pwDays}
+              onChange={(e) => setPwDays(e.target.value)}
+              style={{ marginRight: '10px', width: "200px" }}
+              title="Enter the number of days since last password change"
+            />
+            <button onClick={() => highlightStalePasswords()} style={{ width: '210px' }}>
+              Highlight Password Stale Users
+            </button>
+          </div>
+          <div style={{ marginBottom: '15px' }}>
+            <input
+              type="number"
+              min="0"
+              placeholder="Days since last access"
+              value={accessDays}
+              onChange={(e) => setAccessDays(e.target.value)}
+              style={{ marginRight: '10px', width: "200px" }}
+              title="Enter the number of days since last access"
+            />
+            <button onClick={() => highlightInactiveUsers()} style={{ width: '210px' }}>
+              Highlight Inactive Users
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={() => { setHighlightedRows(new Set()); setPwDays(''); setAccessDays(''); }}
+              style={{ marginBottom: '10px', padding: '5px 10px', marginRight: '20px', background: "#fb8a63" }}
+            >
+              Clear Highlight Filters
+            </button>
+            <button
+              onClick={() => { table.resetColumnFilters(); setHighlightedRows(new Set()); setPwDays(''); setAccessDays(''); }}
+              style={{ marginBottom: '10px', padding: '5px 10px', background: "#ef3f27" }}
+            >
+              Clear All Filters
+            </button>
+          </div>
+        </div>
+
+
       </div>
 
-      <table border="1" cellPadding="8" style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          {table.getHeaderGroups().map(headerGroup => (
-            <React.Fragment key={headerGroup.id}>
-              <tr>
-                {headerGroup.headers.map(header => (
-                  <th key={header.id}>
-                    {flexRender(header.column.columnDef.header, header.getContext())}
-                  </th>
-                ))}
-              </tr>
-              <tr>
-                {headerGroup.headers.map(header => (
-                  <td key={header.id}>
-                    {header.column.getCanFilter()
-                      ? flexRender(
-                          header.column.columnDef.Filter,
-                          { column: header.column, table }
-                        )
-                      : null}
-                  </td>
-                ))}
-              </tr>
-            </React.Fragment>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.length === 0 ? (
-            <tr>
-              <td colSpan={columns.length} style={{ textAlign: 'center' }}>
-                No data available.
-              </td>
-            </tr>
-          ) : (
-            table.getRowModel().rows.map(row => (
-                <tr
-                  key={row.id}
-                  style={{
-                    backgroundColor: highlightedRows.has(row.id) ? 'lightyellow' : 'white',
-                  }}
-                >
-                  {row.getVisibleCells().map(cell => (
-                    <td key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+      <div style={{ maxHeight: '455px', overflow: 'auto', width: '100%' ,borderBottom: '1px solid #222'}}>
+        <table border="1" cellPadding="8" 
+        style={{
+          width: '100%',
+          borderCollapse: 'separate',
+          borderSpacing: 0.1
+        }}
+        >
+          <thead 
+          style={{
+                position: 'sticky',
+                top: 0,
+                background: '#fff',
+                borderBottom: '2px solid #222',
+                zIndex: 3
+              }}
+              >
+            {table.getHeaderGroups().map(headerGroup => (
+              <React.Fragment key={headerGroup.id}>
+                <tr>
+                  {headerGroup.headers.map(header => (
+                    <th key={header.id}>
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                    </th>
+                  ))}
+                </tr>
+                <tr>
+                  {headerGroup.headers.map(header => (
+                    <td key={header.id}>
+                      {header.column.getCanFilter()
+                        ? flexRender(
+                            header.column.columnDef.Filter,
+                            { column: header.column, table }
+                          )
+                        : null}
                     </td>
                   ))}
                 </tr>
-              ))
-          )}
-        </tbody>
-      </table>
+              </React.Fragment>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.length === 0 ? (
+              <tr>
+                <td colSpan={columns.length} style={{ textAlign: 'center' }}>
+                  No data available.
+                </td>
+              </tr>
+            ) : (
+              table.getRowModel().rows.map(row => (
+                  <tr
+                    key={row.id}
+                    style={{
+                      backgroundColor: highlightedRows.has(row.id) ? 'lightyellow' : 'white',
+                    }}
+                  >
+                    {row.getVisibleCells().map(cell => (
+                      <td key={cell.id}>
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
       </div>
   );
 }
