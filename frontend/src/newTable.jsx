@@ -1,6 +1,8 @@
 import logo from './strato.svg';
 import './App.css';
 import React, { useEffect, useMemo, useState } from 'react';
+import { greaterThanNumber } from './utils.js';
+
 import {
   useReactTable,
   getCoreRowModel,
@@ -20,13 +22,22 @@ function formatDate(dateStr) {
 
 function DefaultColumnFilter({ column }) {
     const showClear = !!column.getFilterValue();
+    // Determine placeholder based on filterFn
+    let placeholder = "Filter...";
+    if (column.columnDef.filterFn === greaterThanNumber) {
+      placeholder = "Greater than...";
+    } else if (column.columnDef.filterFn === 'lessThan') {
+      placeholder = "Less than...";
+    } else if (column.columnDef.filterFn === 'includesString') {
+      placeholder = "String match...";
+    }
     return (
       <div style={{ display: 'flex', gap: '4px', alignItems: 'center', minWidth: 0 }}>
         <input
           value={column.getFilterValue() ?? ''}
           onChange={e => column.setFilterValue(e.target.value)}
-          placeholder="Filter..."
-          style={{ flex: 1, minWidth: 0 }}
+          placeholder={placeholder}
+          style={{ flex: 1, minWidth: 0 ,  borderRadius:'8px'}}
         />
         <span style={{ width: 24, display: 'inline-flex', justifyContent: 'center' }}>
           <button
@@ -57,19 +68,17 @@ export default function UserTable() {
     fetch('/api/users')
       .then(res => res.json())
       .then(res => {
-        const users = res.data; // <- FIXED here
-        console.log('Fetched users:', users);
+        const users = res.data;
+        // console.log('Fetched users:', users);
   
         const formatted = users.map(user => ({
             ...user,
-            // createDateRaw: user.create_date,
-            // passwordChangedDateRaw: user.password_changed_date,
-            // lastAccessDateRaw: user.last_access_date,
             create_date: formatDate(user.create_date),
             password_changed_date: formatDate(user.password_changed_date),
             last_access_date: formatDate(user.last_access_date),
             mfa_enabled: user.mfa_enabled ? 'Yes' : 'No',
         }));
+        // console.log('Fetched users:', users);
   
         setData(formatted);
       })
@@ -80,37 +89,32 @@ export default function UserTable() {
     {
       header: 'Human User',
       accessorKey: 'human_user',
-      filterFn: 'includesString',
-      cell: info => info.getValue(),
     },
     {
       header: 'Create Date',
       accessorKey: 'create_date',
-      cell: info => formatDate(info.getValue()),
-      filterFn: 'includesString',
     },
     {
       header: 'Password Changed Date',
       accessorKey: 'password_changed_date',
-      cell: info => formatDate(info.getValue()),
     },
     {
       header: 'Days Since Password Change',
       accessorKey: 'days_since_password_change',
+      filterFn: greaterThanNumber,
     },
     {
       header: 'Last Access Date',
       accessorKey: 'last_access_date',
-      cell: info => formatDate(info.getValue()),
     },
     {
       header: 'Days Since Last Access',
       accessorKey: 'days_since_last_access',
+      filterFn: greaterThanNumber,
     },
     {
       header: 'MFA Enabled',
       accessorKey: 'mfa_enabled',
-    //   cell: info => (info.getValue() ? 'Yes' : 'No'),
     },
   ], []);
 
@@ -121,13 +125,14 @@ export default function UserTable() {
     getFilteredRowModel: getFilteredRowModel(),
     defaultColumn: {
       filterFn: 'includesString',
-      cell: info => info.getValue(),
+      // cell: info => info.getValue(),
       header: ({ column }) => column.columnDef.header,
       footer: ({ column }) => column.id,
       Filter: DefaultColumnFilter,
     },
   });
 
+  const [hoveredRow, setHoveredRow] = useState(null);
   const [highlightedRows, setHighlightedRows] = useState(new Set());
 const [pwDays, setPwDays] = useState('');
 const [accessDays, setAccessDays] = useState('');
@@ -188,7 +193,11 @@ const highlightInactiveUsers = () => {
               style={{ marginRight: '10px', width: "200px" }}
               title="Enter the number of days since last password change"
             />
-            <button onClick={() => highlightStalePasswords()} style={{ width: '210px' }}>
+            <button
+             className='highlight_users_btn'
+            onClick={() => {highlightStalePasswords(); setAccessDays('');}} 
+            // style={{ width: '210px', borderRadius:'8px' }}
+            >
               Highlight Password Stale Users
             </button>
           </div>
@@ -202,45 +211,60 @@ const highlightInactiveUsers = () => {
               style={{ marginRight: '10px', width: "200px" }}
               title="Enter the number of days since last access"
             />
-            <button onClick={() => highlightInactiveUsers()} style={{ width: '210px' }}>
+            <button 
+            className='highlight_users_btn'
+            onClick={() =>{ highlightInactiveUsers(); setPwDays('');}} 
+            // style={{ width: '210px' ,  borderRadius:'8px'}}
+            >
               Highlight Inactive Users
             </button>
           </div>
           <div>
-            <button
-              onClick={() => { setHighlightedRows(new Set()); setPwDays(''); setAccessDays(''); }}
-              style={{ marginBottom: '10px', padding: '5px 10px', marginRight: '20px', background: "#fb8a63" }}
-            >
-              Clear Highlight Filters
-            </button>
-            <button
+
+            
+
+            <button 
+              className="clear_all_button"
+              // className="button-elegante"
               onClick={() => { table.resetColumnFilters(); setHighlightedRows(new Set()); setPwDays(''); setAccessDays(''); }}
-              style={{ marginBottom: '10px', padding: '5px 10px', background: "#ef3f27" }}
+              // style={{ marginBottom: '10px', padding: '5px 10px', background: "#ef3f27" , borderRadius: "8px"}}
             >
-              Clear All Filters
+              Clear All Filters and Highlights
             </button>
+            <button 
+            className="clear_highlights_button"
+            // className='clear_high_btn'
+              onClick={() => { setHighlightedRows(new Set()); setPwDays(''); setAccessDays(''); }}
+              // style={{ marginBottom: '10px', padding: '5px 10px', marginRight: '20px', background: "#fb8a63" }}
+            >
+              Clear Highlights
+            </button>
+
           </div>
         </div>
 
 
       </div>
 
-      <div style={{ maxHeight: '455px', overflow: 'auto', width: '100%' ,borderBottom: '1px solid #222'}}>
-        <table border="1" cellPadding="8" 
-        style={{
-          width: '100%',
-          borderCollapse: 'separate',
-          borderSpacing: 0.1
-        }}
+      <div className="table-container"
+      // style={{ maxHeight: '455px', overflow: 'auto', width: '100%' ,borderBottom: '1px solid #222'}}
+      >
+        <table className="cool-table"
+        border="0" cellPadding="8" 
+        // style={{
+        //   width: '100%',
+        //   borderCollapse: 'separate',
+        //   borderSpacing: 0.1
+        // }}
         >
-          <thead 
-          style={{
-                position: 'sticky',
-                top: 0,
-                background: '#fff',
-                borderBottom: '2px solid #222',
-                zIndex: 3
-              }}
+          <thead className="table-header"
+          // style={{
+          //       position: 'sticky',
+          //       top: 0,
+          //       background: '#fff',
+          //       borderBottom: '2px solid #222',
+          //       zIndex: 3
+          //     }}
               >
             {table.getHeaderGroups().map(headerGroup => (
               <React.Fragment key={headerGroup.id}>
@@ -278,8 +302,17 @@ const highlightInactiveUsers = () => {
                   <tr
                     key={row.id}
                     style={{
-                      backgroundColor: highlightedRows.has(row.id) ? 'lightyellow' : 'white',
+                      // backgroundColor: highlightedRows.has(row.id) ? 'lightyellow' : 'white',
+                      backgroundColor: highlightedRows.has(row.id)
+                        ? 'lightyellow'
+                        : hoveredRow === row.id
+                          ? '#d4e3f6' // hover color
+                          : 'white',
+                      transition: 'background-color 0.2s',
+                      textAlign: 'center'
                     }}
+                    onMouseEnter={() => setHoveredRow(row.id)}
+                    onMouseLeave={() => setHoveredRow(null)}
                   >
                     {row.getVisibleCells().map(cell => (
                       <td key={cell.id}>
@@ -291,6 +324,12 @@ const highlightInactiveUsers = () => {
             )}
           </tbody>
         </table>
+      </div>
+      <div 
+      className="table-summary"
+      // style={{ marginTop: '8px' , textAlign: 'center' }}
+      >
+        Showing {table.getFilteredRowModel().rows.length} of {table.getPreFilteredRowModel().rows.length} rows
       </div>
 
       </div>
