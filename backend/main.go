@@ -12,12 +12,12 @@ var (
 
 func ping(c *gin.Context) {
 	obj := map[string]string{"message": "pong"}
-	c.JSON(200, obj)
+	addApiResp(c, 200, obj)
 }
 
 func initRoutes(router *gin.Engine) {
 	router.GET("/ping", ping)
-	router.GET("/api/users", userAPI)
+	router.GET("/api/users", handleUsersAPI)
 }
 
 func main() {

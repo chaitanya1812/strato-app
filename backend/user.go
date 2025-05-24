@@ -12,28 +12,33 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// file path of the users csv file
 var filePath = "user_data.csv"
 
-func userAPI(c *gin.Context) {
+func handleUsersAPI(c *gin.Context) {
 	users, err := readData()
+	// return error response in case of any error
 	if err != nil {
 		addErrorResp(c, 500, "unable to get user data : "+err.Error())
 		return
 	}
+	// return API reponse
 	addApiResp(c, 200, users)
 }
 
 func readData() ([]User, error) {
+	// open the file
 	f, err := os.Open(filePath)
 
 	if err != nil {
 		return nil, errors.New("unable open file")
 	}
-
+	// close when done
 	defer f.Close()
-
+	// get new reader
 	csvReader := csv.NewReader(f)
-	// csvReader.FieldsPerRecord = 7
+	
+	// read and ignore the header
 	_, err = csvReader.Read()
 	if err != nil {
 		return nil, fmt.Errorf("unable to read the file header : %s", err.Error())
@@ -50,6 +55,7 @@ func readData() ([]User, error) {
 		if err != nil {
 			return nil, fmt.Errorf("unable to read the file row : %s", err.Error())
 		}
+		// parse fields
 
 		createDate, err := parseDate(userRow[1])
 		if err != nil {
@@ -69,20 +75,17 @@ func readData() ([]User, error) {
 			continue
 		}
 		now := time.Now()
-	
-		// daysSincePasswordChange, err := strconv.Atoi(userRow[3])
-		// if err != nil {
-		// 	fmt.Printf("unable to parse days since password change : %s", err.Error())
-		// }
+
+		// compute daysSincePasswordChange take time difference in hrs and divide by 24 to get #days
 		daysSincePasswordChange := int(now.Sub(passwordChangeDate).Hours() / 24)
-		// daysSinceLastAccess, err := strconv.Atoi(userRow[5])
-		// if err != nil {
-		// 	fmt.Printf("unable to parse days since last access : %s", err.Error())
-		// }
+		
+		// compute daysSinceLastAccess take time difference in hrs and divide by 24 to get #days
 		daysSinceLastAccess := int(now.Sub(lastAccessDate).Hours() / 24)
 
+		// convert to bool, can be formated in frontend as needed.
 		mfaEnabled := (strings.ToLower(userRow[6]) == "yes")
 
+		// build and append current user object
 		users = append(users, User{
 			HumanUser:               userRow[0],
 			CreateDate:              createDate,
@@ -94,9 +97,11 @@ func readData() ([]User, error) {
 		})
 
 	}
+	// return users array
 	return users, nil
 }
 
+// parseDate parse the date from file format to golang time.Time format
 func parseDate(dateStr string) (time.Time, error) {
 	layout := "Jan 2 2006"
 	return time.Parse(layout, dateStr)
