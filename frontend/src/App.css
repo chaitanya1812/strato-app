@@ -55,3 +55,199 @@ th {
 input {
   padding: 4px;
 }
+
+
+.table-summary {
+  margin: 16px auto 0 auto;
+  text-align: center;
+  background: #d4e3f6;
+  color: #222;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(76, 75, 75, 0.06);
+  padding: 10px 0;
+  width: 320px;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Table container */
+.table-container {
+  max-height: 455px;
+  overflow: auto;
+  width: 100%;
+  border-bottom: 1px solid #222;
+  background: #fafbfc;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(34, 34, 34, 0.07);
+  /* padding: 12px 0; */
+}
+
+/* Table */
+.cool-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: auto;
+  background: white;
+  box-shadow: 0 1px 4px rgba(34, 34, 34, 0.06);
+}
+
+/* Table Header */
+.cool-table th {
+  background: #cfe1f8;
+  color: #222;
+  font-weight: 600;
+  padding: 12px 10px;
+  border-bottom: 0.5px solid #e0e4ea;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+}
+
+/* Table Body */
+.cool-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #f0f1f3;
+  border-right: none;
+  border-left: none;
+}
+
+/* Rounded corners for first and last cells */
+.cool-table th:first-child,
+.cool-table td:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.cool-table th:last-child,
+.cool-table td:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+
+.table-header {
+  position: sticky;
+  top: 0;
+  background:  #e0eaf7;
+  z-index: 2;
+} 
+
+
+.clear_highlights_button {
+  display: inline-block;
+  padding: 5px 10px;
+  border: 1px solid #4f4f4f;
+  border-radius: 4px;
+  transition: all 0.2s ease-in;
+  position: relative;
+  overflow: hidden;
+  /* font-size: 10px; */
+  cursor: pointer;
+  color: black;
+  z-index: 1;
+  /* margin-right: 10px; */
+  background-color: #d4e3f6;
+  /* background-color: #cfe1f8; */
+  width: 210px;
+}
+
+.clear_highlights_button:after {
+  content: "";
+  position: absolute;
+  left: 55%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.45);
+  top: 180%;
+  width: 160%;
+  height: 190%;
+  /* background-color: #39bda7; */
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+.clear_highlights_button:hover:after {
+  top: -45%;
+  background-color: #88b7f4;
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+
+
+/* clear all */
+.clear_all_button {
+  display: inline-block;
+  padding: 5px 10px;
+  border: 1px solid #4f4f4f;
+  border-radius: 4px;
+  transition: all 0.2s ease-in;
+  position: relative;
+  overflow: hidden;
+  /* font-size: 10px; */
+  cursor: pointer;
+  color: black;
+  z-index: 1;
+  background-color: #f46a6a;
+  margin-right: 10px;
+  width: 210px;
+}
+
+.clear_all_button:after {
+  content: "";
+  position: absolute;
+  left: 55%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.45);
+  top: 180%;
+  width: 160%;
+  height: 190%;
+  /* background-color: #39bda7; */
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+.clear_all_button:hover:after {
+  top: -45%;
+  background-color: #fc0202;
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+
+/* highlight_users_btn */
+
+.highlight_users_btn {
+  display: inline-block;
+  padding: 5px 10px;
+  border: 1px solid #4f4f4f;
+  border-radius: 4px;
+  transition: all 0.2s ease-in;
+  position: relative;
+  overflow: hidden;
+  /* font-size: 10px; */
+  cursor: pointer;
+  color: black;
+  z-index: 1;
+  width: 210px;
+  background-color: #d4e3f6;
+}
+
+.highlight_users_btn:after {
+  content: "";
+  position: absolute;
+  left: 55%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.45);
+  top: 180%;
+  width: 160%;
+  height: 190%;
+  /* background-color: #39bda7; */
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+.highlight_users_btn:hover:after {
+  top: -45%;
+  background-color: #88b7f4;
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
