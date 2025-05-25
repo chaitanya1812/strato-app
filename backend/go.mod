@@ -1,4 +1,4 @@
-module main
+module strato
 
 go 1.23.2
 

@@ -16,6 +16,7 @@ function formatDate(dateStr) {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
+    timeZone: 'UTC',
   });
 }
 
@@ -78,7 +79,7 @@ export default function UserTable() {
             last_access_date: formatDate(user.last_access_date),
             mfa_enabled: user.mfa_enabled ? 'Yes' : 'No',
         }));
-        // console.log('Fetched users:', users);
+        // console.log('formatted users:', formatted);
   
         setData(formatted);
       })
@@ -330,6 +331,11 @@ const highlightInactiveUsers = () => {
       // style={{ marginTop: '8px' , textAlign: 'center' }}
       >
         Showing {table.getFilteredRowModel().rows.length} of {table.getPreFilteredRowModel().rows.length} rows
+      </div>
+      <div 
+      style={{ marginTop: '8px' , textAlign: 'center' }}
+      >
+        <b>Note:</b> All time-stamps and time-differences are UTC based
       </div>
 
       </div>

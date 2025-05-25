@@ -2,13 +2,34 @@
 Fetch Users data from a Golang API and display in Frontend React App.
 
 ## how to run
- - Make sure docker daemon is up and running. Run the following command to build and start the application.
+- Make sure docker daemon is up and running. Run the following command to build and start the application.
 
     `docker compose up --build`
 
 > **Note:** The port numbers used for the application to run on host machine are `3000` for frontend and `8300` for backend. If you see any errors like "port in use" for frontend or backend, update the host machine port mapping in the  [`docker-compose.yml`](docker-compose.yml) file with the unused port in you host machine. 
 
 - Now visit `localhost:3000` / `localhost:<forntend-port>` to open the app.
+
+> note: ensure the proxy is configured in [package.json](frontend/package.json) as `"proxy": "http://backend:<backend-port>"`.
+
+
+## how to run without using docker (ignore if you are using docker):
+- Make sure Golang and React JS setup is properly configured.
+
+- First let's run the backend go server. Go to the new terminal and run the following commande from the project root.
+    ```bash
+    cd backend && go run .
+    ```
+> note: ensure the proxy is configured in [package.json](frontend/package.json) as `"proxy": "http://0.0.0.0:<backend-port>"`.
+
+- Now, let's run the frontend. Go to the new terminal and run the following commande from the project root.
+    ```bash
+    cd frontend && npm start
+    ```
+> note: in case of issues with the port numbers, update the port number [main.go](backend/main.go) for backend and for frontend configure it by adding a `.env` file in `~/frontend/` folder and setting `PORT=<port-no>` in the .env file.
+
+- Now visit `localhost:3000` / `localhost:<forntend-port>` to open the app.
+
 
 
 ## Docker compose and Docker file details:
@@ -49,6 +70,7 @@ Fetch Users data from a Golang API and display in Frontend React App.
 - The API finally retuns the array of user objects. 
 - The API prints error and ignores the rows in case of any errors in a spicific row. In case of error while reading file the error object is returned.
 - All the API responses without error, the response object is wrapped and can be accessed with `data` key. In case of error, the error object wrapped and can be accessed with `error` key. The reponse objects are attached with proper HTTP status code. for eg: `200` in case of correct reponse, `500` in case of any internal server error.
+- unit test file is added at [user_test.go](backend/user_test.go) to test the reading data from csv file.
 
 ## Backend APIs
 
@@ -108,6 +130,7 @@ Fetch Users data from a Golang API and display in Frontend React App.
 ## limitations and tradoffs:
 - The file with users data is expected to be in csv format.
 - The file with users data  is expected to be in the `~/backend/` folder with name `user_data.csv` [csv file](backend/user_data.csv). or update the file_path in code [user.go](backend/user.go) accordingly.
+- Regarding the time difference calculation: The time stamps in csv file are considered as UTC 0hrs:0mins time stamp and the difference is calculated based on current UTC time. Additionally, the days do not round, but truncate towards zero. This means that if there is any partial day (even a second), it will not be counted as a full day.
 
 # Frontend 
 - ReactJs is used to develop the frontend. 
@@ -122,7 +145,7 @@ Fetch Users data from a Golang API and display in Frontend React App.
 - The table has a header with column names and then a row with filter input boxes to take filter input value. Filters can be applied on multiple columns at a time. A `x` button pops up next to the input box to clear the particular column filter. 
 - Note: for `Days Since Password Change` and `Days Since Last Access` columns the filter is GreaterThan filter and for all other columns it is string matching filter.
 - Additionally there is a table summary which shows the number rows currently displayed.
-- Also there are few row highlighting options provided in the top right corner - to highlight the the Password stale users (based on `Days Since Password Change`) and Inactive users (based on `Days Since Last Access	`) - The rows with data value greater than the entered input value are highlighted. These highlight options won't filter out other rows, but just highlights the correponding rows as per the highlight options selected.
+- Also there are few row highlighting options provided in the top right corner - to highlight the the Password stale users (based on `Days Since Password Change`) and Inactive users (based on `Days Since Last Access`) - The rows with data value greater than the entered input value are highlighted. These highlight options won't filter out other rows, but just highlights the correponding rows as per the highlight options selected.
 - `highlightStalePasswords`, `highlightInactiveUsers` methods are called when the corresponding highlight buttons are clicked. when these methods are invoked, they set the highlighted rows based on the entered input value and the rows are highlighted in `lightyellow` color.
 - Note: to properly use highlights, first apply the colum filters if needed, then use the highlight options.
 - There is an option to `Clear Highlights` which clears the current highlights on the rows and also an option to `Clear All Filters and Highlights` to clear all the current filters and highlights.
