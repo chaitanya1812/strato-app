@@ -5,9 +5,9 @@
 .App {
   display: flex;
   flex-direction: column;
-  align-items: center;      /* Horizontal centering */
+  align-items: center; 
   /* justify-content: center;  Vertical centering */
-  min-height: 100vh;        /* Full viewport height */
+  /* min-height: 100vh;        */
 }
 
 .App-logo {
@@ -21,7 +21,7 @@
   }
 } */
 
-.App-header {
+/* .App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -30,20 +30,8 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-}
+} */
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 
 
 table {
@@ -75,6 +63,7 @@ input {
   max-height: 455px;
   overflow: auto;
   width: 100%;
+  /* text-align: center; */
   border-bottom: 1px solid #222;
   background: #fafbfc;
   border-radius: 12px;
@@ -90,6 +79,7 @@ input {
   border-radius: 12px;
   overflow: auto;
   background: white;
+  /* text-align: center; */
   box-shadow: 0 1px 4px rgba(34, 34, 34, 0.06);
 }
 

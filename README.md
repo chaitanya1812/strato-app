@@ -151,3 +151,7 @@ Fetch Users data from a Golang API and display in Frontend React App.
 - There is an option to `Clear Highlights` which clears the current highlights on the rows and also an option to `Clear All Filters and Highlights` to clear all the current filters and highlights.
 - The css styling is declared in css file and inline as needed.
 
+## References:
+- column filtering: https://tanstack.com/table/v8/docs/guide/column-filtering
+- custom filering: https://tanstack.com/table/v8/docs/framework/react/examples/filters-fuzzy
+- react inline styling: https://stackoverflow.com/questions/28365233/inline-css-styles-in-react-how-to-implement-ahover
