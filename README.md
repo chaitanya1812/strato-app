@@ -8,9 +8,11 @@ Fetch Users data from a Golang API and display in Frontend React App.
 
 > **Note:** The port numbers used for the application to run on host machine are `3000` for frontend and `8300` for backend. If you see any errors like "port in use" for frontend or backend, update the host machine port mapping in the  [`docker-compose.yml`](docker-compose.yml) file with the unused port in you host machine. 
 
+> **Note:** ensure the proxy is configured correctly in [package.json](frontend/package.json) as `"proxy": "http://backend:<backend-port>"`. (`http://backend:8300` is the default proxy value)
+
 - Now visit `localhost:3000` / `localhost:<forntend-port>` to open the app.
 
-> note: ensure the proxy is configured in [package.json](frontend/package.json) as `"proxy": "http://backend:<backend-port>"`.
+
 
 
 ## how to run without using docker (ignore if you are using docker):
@@ -20,11 +22,14 @@ Fetch Users data from a Golang API and display in Frontend React App.
     ```bash
     cd backend && go run .
     ```
-> note: ensure the proxy is configured in [package.json](frontend/package.json) as `"proxy": "http://0.0.0.0:<backend-port>"`.
+
+> **Note:** ensure the proxy is configured correctly in [package.json](frontend/package.json) as `"proxy": "http://0.0.0.0:<backend-port>"`.
 
 - Now, let's run the frontend. Go to the new terminal and run the following commande from the project root.
     ```bash
-    cd frontend && npm start
+    cd frontend
+    npm install
+    npm start
     ```
 > note: in case of issues with the port numbers, update the port number [main.go](backend/main.go) for backend and for frontend configure it by adding a `.env` file in `~/frontend/` folder and setting `PORT=<port-no>` in the .env file.
 
