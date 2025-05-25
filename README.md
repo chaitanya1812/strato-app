@@ -127,13 +127,13 @@ Fetch Users data from a Golang API and display in Frontend React App.
         }
       ```
 
-## limitations and tradoffs:
+## Limitations and tradoffs:
 - The file with users data is expected to be in csv format.
 - The file with users data  is expected to be in the `~/backend/` folder with name `user_data.csv` [csv file](backend/user_data.csv). or update the file_path in code [user.go](backend/user.go) accordingly.
 - Regarding the time difference calculation: The time stamps in csv file are considered as UTC 0hrs:0mins time stamp and the difference is calculated based on current UTC time. Additionally, the days do not round, but truncate towards zero. This means that if there is any partial day (even a second), it will not be counted as a full day.
 
 # Frontend 
-- ReactJs is used to develop the frontend. 
+- ReactJS is used to develop the frontend. 
 - The proxy is configured in [package.json](frontend/package.json) as `"proxy": "http://<backend-host>:<backend-port>"` to be able to connect to the backend.
 - `@tanstack/react-table` library is used to display the table.
 - An api call (`/api/users`) is made to the backend to fetch the data. `fetch('/api/users')`
