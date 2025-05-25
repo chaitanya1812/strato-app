@@ -74,7 +74,7 @@ func readData() ([]User, error) {
 			fmt.Printf("unable to parse last access date : %s", err.Error())
 			continue
 		}
-		now := time.Now()
+		now := time.Now().UTC()
 
 		// compute daysSincePasswordChange take time difference in hrs and divide by 24 to get #days
 		daysSincePasswordChange := int(now.Sub(passwordChangeDate).Hours() / 24)
