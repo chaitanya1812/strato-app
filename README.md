@@ -2,7 +2,7 @@
 Fetch Users data from a Golang API and display in Frontend React App.
 
 ## how to run
-- Make sure docker daemon is up and running. Run the following command to build and start the application.
+- Make sure docker daemon is up and running. Run the following command (from project root) to build and start the application.
 
     `docker compose up --build`
 
